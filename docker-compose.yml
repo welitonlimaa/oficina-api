@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  node:
+    image: node:16.14
+    container_name: oficinaapi
+    user: node
+    tty: true
+    stdin_open: true
+    command: npm run dev
+    restart: always
+    working_dir: /oficina-api
+    volumes:
+      - ./:/oficina-api
+    depends_on:
+      - mongodb
+    ports:
+      - 3001:3001
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/oficinaapi
+
+  mongodb:
+    image: mongo:5.0.7
+    container_name: db
+    volumes:
+      - ./:/app
+    restart: always
+    ports:
+      - 8081:27017
+
+networks:
+  default:
+    name: oficina_net
